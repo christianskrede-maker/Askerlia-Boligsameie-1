@@ -2,73 +2,65 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Avstemning – Askerlia Boligsameie</title>
 
 <style>
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f4f4f4;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f4f4f4;
 }
 
-/* HEADER */
 header {
-    background: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
+  background: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
 }
 
 .logo {
-    max-width: 260px;
-    margin-bottom: 20px;
+  max-width: 300px;
+  margin-bottom: 20px;
 }
 
-/* MAIN BOX */
 .container {
-    max-width: 500px;
-    margin: 40px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-h1 {
-    margin: 0;
+  max-width: 520px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.12);
 }
 
 .deadline {
-    color: red;
-    font-weight: bold;
-    margin-top: 10px;
+  color: red;
+  font-weight: bold;
 }
 
-/* INPUT */
 input {
-    width: 100%;
-    padding: 12px;
-    margin-top: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
-/* COLOR BUTTONS */
 .color-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 10px 0 20px;
 }
 
 .color-btn {
-    padding: 15px;
-    border-radius: 8px;
-    border: 2px solid transparent;
-    cursor: pointer;
-    font-weight: bold;
-    text-align: center;
+  padding: 16px;
+  border-radius: 8px;
+  border: 3px solid transparent;
+  cursor: pointer;
+  font-weight: bold;
+  text-align: center;
 }
 
 .green { background: #4CAF50; color: white; }
@@ -77,23 +69,24 @@ input {
 .none { background: #bdc3c7; }
 
 .selected {
-    border: 3px solid black;
+  border: 3px solid black;
 }
 
-/* BUTTON */
 button {
-    width: 100%;
-    padding: 15px;
-    background: #2c3e50;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
+  width: 100%;
+  padding: 16px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 17px;
+  cursor: pointer;
 }
 
-button:hover {
-    background: #1a252f;
+.message {
+  margin-top: 20px;
+  font-weight: bold;
+  text-align: center;
 }
 </style>
 </head>
@@ -101,56 +94,84 @@ button:hover {
 <body>
 
 <header>
-    <img src="logo.png" class="logo">
-    <h1>Avstemning – Farge på bygget</h1>
-    <p>Askerlia Boligsameie</p>
+  <img src="logo.png" class="logo" alt="Askerlia logo">
+  <h1>Avstemning – Farge på bygget</h1>
+  <p>Askerlia Boligsameie</p>
 </header>
 
 <div class="container">
+  <p>Velg hvilken farge du ønsker at bygget skal males i:</p>
+  <p class="deadline">Frist: 1. juni</p>
 
-<p>Velg hvilken farge du ønsker at bygget skal males i:</p>
-<p class="deadline">Frist: 1. juni</p>
+  <form id="voteForm">
+    <label>Navn</label>
+    <input type="text" id="navn" required>
 
-<form action="https://formsubmit.co/askerlia1@gmail.com" method="POST">
+    <label>E-post</label>
+    <input type="email" id="epost" required>
 
-<input type="hidden" name="_subject" value="Ny stemme – Askerlia">
+    <label>Oppgang / Leilighet</label>
+    <input type="text" id="leilighet" required>
 
-<label>Navn</label>
-<input type="text" name="Navn" required>
+    <label>Velg farge</label>
+    <div class="color-options">
+      <div class="color-btn green" onclick="selectColor('Grønn', this)">Grønn</div>
+      <div class="color-btn red" onclick="selectColor('Rød', this)">Rød</div>
+      <div class="color-btn blue" onclick="selectColor('Gråblå', this)">Gråblå</div>
+      <div class="color-btn none" onclick="selectColor('Ingen av fargene', this)">Ingen av fargene</div>
+    </div>
 
-<label>E-post</label>
-<input type="email" name="Epost" required>
+    <input type="hidden" id="fargevalg" required>
 
-<label>Oppgang / Leilighet</label>
-<input type="text" name="Leilighet" required>
+    <button type="submit">Send stemme</button>
+  </form>
 
-<label>Velg farge</label>
-
-<div class="color-options">
-    <div class="color-btn green" onclick="selectColor('Grønn', this)">Grønn</div>
-    <div class="color-btn red" onclick="selectColor('Rød', this)">Rød</div>
-    <div class="color-btn blue" onclick="selectColor('Gråblå', this)">Gråblå</div>
-    <div class="color-btn none" onclick="selectColor('Ingen', this)">Ingen av fargene</div>
-</div>
-
-<input type="hidden" name="Fargevalg" id="colorInput" required>
-
-<button type="submit">Send stemme</button>
-
-</form>
-
+  <div id="message" class="message"></div>
 </div>
 
 <script>
-function selectColor(color, el) {
-    document.getElementById("colorInput").value = color;
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwGhidY9IJMExW07PHZ4kI1WYZTH95pZHZ9CuZQQrQjQiQVjn8a_GQhEFR1ibyka8I2/exec";
 
-    document.querySelectorAll(".color-btn").forEach(btn => {
-        btn.classList.remove("selected");
-    });
+function selectColor(color, element) {
+  document.getElementById("fargevalg").value = color;
 
-    el.classList.add("selected");
+  document.querySelectorAll(".color-btn").forEach(btn => {
+    btn.classList.remove("selected");
+  });
+
+  element.classList.add("selected");
 }
+
+document.getElementById("voteForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const data = {
+    Navn: document.getElementById("navn").value,
+    Epost: document.getElementById("epost").value,
+    Leilighet: document.getElementById("leilighet").value,
+    Fargevalg: document.getElementById("fargevalg").value
+  };
+
+  if (!data.Fargevalg) {
+    document.getElementById("message").innerText = "Velg en farge før du sender.";
+    return;
+  }
+
+  document.getElementById("message").innerText = "Sender stemme...";
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  });
+
+  document.getElementById("voteForm").reset();
+  document.querySelectorAll(".color-btn").forEach(btn => btn.classList.remove("selected"));
+  document.getElementById("message").innerText = "Takk! Stemmen din er registrert.";
+});
 </script>
 
 </body>
