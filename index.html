@@ -142,7 +142,7 @@ function selectColor(color, element) {
   element.classList.add("selected");
 }
 
-document.getElementById("voteForm").addEventListener("submit", function(e) {
+document.getElementById("voteForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
   const data = {
@@ -159,18 +159,29 @@ document.getElementById("voteForm").addEventListener("submit", function(e) {
 
   document.getElementById("message").innerText = "Sender stemme...";
 
-  fetch(SCRIPT_URL, {
-  method: "POST",
-  mode: "no-cors",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  });
+  try {
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
 
-  document.getElementById("voteForm").reset();
-  document.querySelectorAll(".color-btn").forEach(btn => btn.classList.remove("selected"));
-  document.getElementById("message").innerText = "Takk! Stemmen din er registrert.";
+    const text = await response.text();
+
+    if (text === "DUPLICATE") {
+      document.getElementById("message").innerText = "Du har allerede stemt fra denne leiligheten.";
+      return;
+    }
+
+    document.getElementById("voteForm").reset();
+    document.querySelectorAll(".color-btn").forEach(btn => btn.classList.remove("selected"));
+    document.getElementById("message").innerText = "Takk! Stemmen din er registrert.";
+
+  } catch (error) {
+    document.getElementById("message").innerText = "Noe gikk galt. Prøv igjen.";
+  }
 });
 </script>
 
