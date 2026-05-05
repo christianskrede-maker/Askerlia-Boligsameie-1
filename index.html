@@ -2,113 +2,156 @@
 <html lang="no">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Avstemning – Askerlia Boligsameie</title>
 
 <style>
-  body {
+body {
     font-family: Arial, sans-serif;
+    margin: 0;
     background: #f4f4f4;
-    margin: 0;
-    text-align: center;
-  }
+}
 
-  header {
-    background: #1f3a5f;
+/* HEADER */
+header {
+    background: #2c3e50;
     color: white;
-    padding: 30px;
-  }
+    text-align: center;
+    padding: 40px 20px;
+}
 
-  h1 {
-    margin: 0;
-  }
+.logo {
+    max-width: 260px;
+    margin-bottom: 20px;
+}
 
-  .container {
-    max-width: 600px;
+/* MAIN BOX */
+.container {
+    max-width: 500px;
     margin: 40px auto;
     background: white;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  }
+}
 
-  label {
-    display: block;
-    margin-top: 15px;
-    text-align: left;
-  }
+h1 {
+    margin: 0;
+}
 
-  input, select {
-    width: 100%;
-    padding: 12px;
-    margin-top: 5px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-
-  .button {
-    margin-top: 25px;
-    padding: 15px;
-    width: 100%;
-    background: #1f3a5f;
-    color: white;
-    border: none;
-    font-size: 18px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  .button:hover {
-    background: #162c47;
-  }
-
-  .deadline {
+.deadline {
     color: red;
     font-weight: bold;
     margin-top: 10px;
-  }
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* COLOR BUTTONS */
+.color-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.color-btn {
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+}
+
+.green { background: #4CAF50; color: white; }
+.red { background: #e74c3c; color: white; }
+.blue { background: #5a6f8c; color: white; }
+.none { background: #bdc3c7; }
+
+.selected {
+    border: 3px solid black;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 15px;
+    background: #2c3e50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1a252f;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <h1>Avstemning – Farge på bygget</h1>
-  <p>Askerlia Boligsameie</p>
+    <img src="logo.png" class="logo">
+    <h1>Avstemning – Farge på bygget</h1>
+    <p>Askerlia Boligsameie</p>
 </header>
 
 <div class="container">
 
-  <p>Velg hvilken farge du ønsker at bygget skal males i.</p>
-  <p class="deadline">Frist: 1. juni</p>
+<p>Velg hvilken farge du ønsker at bygget skal males i:</p>
+<p class="deadline">Frist: 1. juni</p>
 
-  <form action="https://formsubmit.co/askerlia1@gmail.com" method="POST">
+<form action="https://formsubmit.co/askerlia1@gmail.com" method="POST">
 
-    <input type="hidden" name="_subject" value="Ny stemme – Askerlia">
+<input type="hidden" name="_subject" value="Ny stemme – Askerlia">
 
-    <label>Navn</label>
-    <input type="text" name="Navn" required>
+<label>Navn</label>
+<input type="text" name="Navn" required>
 
-    <label>E-post</label>
-    <input type="email" name="E-post" required>
+<label>E-post</label>
+<input type="email" name="Epost" required>
 
-    <label>Oppgang / Leilighet</label>
-    <input type="text" name="Leilighet" required>
+<label>Oppgang / Leilighet</label>
+<input type="text" name="Leilighet" required>
 
-    <label>Velg farge</label>
-    <select name="Fargevalg" required>
-      <option value="">Velg alternativ</option>
-      <option>Grønn</option>
-      <option>Rød</option>
-      <option>Gråblå</option>
-      <option>Ingen av fargene</option>
-    </select>
+<label>Velg farge</label>
 
-    <button class="button">Send stemme</button>
+<div class="color-options">
+    <div class="color-btn green" onclick="selectColor('Grønn', this)">Grønn</div>
+    <div class="color-btn red" onclick="selectColor('Rød', this)">Rød</div>
+    <div class="color-btn blue" onclick="selectColor('Gråblå', this)">Gråblå</div>
+    <div class="color-btn none" onclick="selectColor('Ingen', this)">Ingen av fargene</div>
+</div>
 
-  </form>
+<input type="hidden" name="Fargevalg" id="colorInput" required>
+
+<button type="submit">Send stemme</button>
+
+</form>
 
 </div>
+
+<script>
+function selectColor(color, el) {
+    document.getElementById("colorInput").value = color;
+
+    document.querySelectorAll(".color-btn").forEach(btn => {
+        btn.classList.remove("selected");
+    });
+
+    el.classList.add("selected");
+}
+</script>
 
 </body>
 </html>
